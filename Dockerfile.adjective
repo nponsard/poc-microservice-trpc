@@ -1,0 +1,25 @@
+FROM node:18
+
+WORKDIR /build
+
+COPY package.json package-lock.json ./
+
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+RUN mkdir -p /app/bin
+
+RUN cp -r node_modules  /app/
+
+RUN cp -r bin/adjective /app/bin/
+
+WORKDIR /app
+
+RUN rm -rf /build
+
+EXPOSE 3000
+
+CMD node bin/adjective/rpc.js

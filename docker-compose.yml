@@ -1,0 +1,33 @@
+services:
+  adjective:
+    build:
+      context: .  
+      dockerfile: Dockerfile.adjective
+    expose:
+      - 3000
+    ports:
+      - "3032:3000"
+    restart: unless-stopped
+
+  word:
+    build:
+      context: .
+      dockerfile: Dockerfile.word
+    expose:
+      - 3000  
+    ports:
+      - "3031:3000"
+    restart: unless-stopped
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    ports:
+      - "3030:3000"
+    links:
+      - adjective
+      - word
+    restart: unless-stopped
+    environment:
+      - ADJECTIVE_SERVICE=http://adjective:3000
+      - WORD_SERVICE=http://word:3000

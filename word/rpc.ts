@@ -2,6 +2,15 @@ import { initTRPC } from '@trpc/server';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 
 const t = initTRPC.create();
+
+let PORT = parseInt(process.env.PORT || '', 10);
+
+if (isNaN(PORT)) {
+  PORT = 3000;
+}
+
+console.log('Starting word service on port', PORT);
+
 interface Word {
   type: 'verb' | 'noun';
   word: string;
@@ -88,6 +97,6 @@ createHTTPServer({
   createContext() {
     return {};
   },
-}).listen(2022);
+}).listen(PORT);
 
 export type AppRouter = typeof appRouter;
