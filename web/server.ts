@@ -1,8 +1,6 @@
-// @filename: client.ts
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 import type { AppRouter as AppRouter1 } from '../word/rpc';
 import type { AppRouter as AppRouter2 } from '../adjective/rpc';
-
 import express from 'express';
 
 const ADJECTIVE_SERVICE =
@@ -14,7 +12,6 @@ if (isNaN(PORT)) {
   PORT = 3000;
 }
 
-// Notice the <AppRouter> generic here.
 const wordService = createTRPCProxyClient<AppRouter1>({
   links: [
     httpBatchLink({
@@ -39,7 +36,6 @@ app.get('', async (req, res) => {
     adjectiveService.randomAdjective.query(),
     wordService.randomWord.query('verb'),
   ]);
-
   res.json({
     word,
     adjective,
